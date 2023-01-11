@@ -16,10 +16,6 @@ var city = $('#city');
 form.submit(function (event) {
     event.preventDefault();
 
-    // var taco = document.createElement("button")
-    // taco.innerHTML = "taco time"
-    // document.querySelector("#searchBar").appendChild(taco)
-
     console.log(city.val());
     var urlWeather = `https://api.openweathermap.org/data/2.5/weather?q=${city.val()}&units=imperial&appid=${key}`
     var urlFiveDay = `https://api.openweathermap.org/data/2.5/forecast?q=${city.val()}&units=imperial&appid=${key}`
@@ -33,9 +29,9 @@ form.submit(function (event) {
             var weatherHeader = document.createElement('h2');
             weatherHeader.innerHTML = data.name;
             document.getElementById('weather-container').append(weatherHeader);
-            // var date = document.createElement('h3');
-            // date.innerHTML = data.dt;
-            // weatherHeader.append(date);
+            var date = document.createElement('h3');
+            date.innerHTML = new Date(data.dt * 1000).toLocaleString("en-US");
+            weatherHeader.append(date);
             var temp = document.createElement('p');
             temp.innerHTML = `Temp: ${data.main.temp} \u00B0F`;
             weatherHeader.append(temp);
@@ -47,29 +43,28 @@ form.submit(function (event) {
             weatherHeader.append(humidity);
         });
     fetch(urlFiveDay)
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        console.log(data);
-        for(var i = 0; i < data.length; i+=8){
-            var dayContainer = document.createElement('div');
-            document.getElementById('five-day-container').append(dayContainer);
-            // var date = document.createElement('p');
-            // date.innerHTML = ;
-            dayContainer.append(date);
-            var temp = document.createElement('p');
-            temp.innerHTML = `Temp: ${list[i].main.temp} \u00B0F`;
-            dayContainer.append(temp);
-            var wind = document.createElement('p');
-            wind.innerHTML = `Wind: ${list[i].wind.speed} MPH`;
-            dayContainer.append(wind);
-            var humidity = document.createElement('p');
-            humidity.innerHTML = `Humidity: ${list[i].main.humidity} %`;
-            dayContainer.append(humidity);
-        }
-
-    });
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            for(var i = 0; i < data.list.length; i+=8){
+                var dayContainer = document.createElement('div');
+                document.getElementById('five-day-container').append(dayContainer);
+                var date = document.createElement('p');
+                date.innerHTML = data.list[i].dt_txt;
+                dayContainer.append(date);
+                var temp = document.createElement('p');
+                temp.innerHTML = `Temp: ${data.list[i].main.temp} \u00B0F`;
+                dayContainer.append(temp);
+                var wind = document.createElement('p');
+                wind.innerHTML = `Wind: ${data.list[i].wind.speed} MPH`;
+                dayContainer.append(wind);
+                var humidity = document.createElement('p');
+                humidity.innerHTML = `Humidity: ${data.list[i].main.humidity} %`;
+                dayContainer.append(humidity);
+            }
+        });
 })
 
 // for (let i = 0; i < array.length; i+=8) {
