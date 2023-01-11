@@ -16,6 +16,12 @@ var city = $('#city');
 form.submit(function (event) {
     event.preventDefault();
 
+    var prevSearch = document.createElement('button');
+    prevSearch.innerHTML = city.val();
+    prevSearch.setAttribute('class', 'searchButtons')
+    document.getElementById('sidebar').append(prevSearch);
+
+
     console.log(city.val());
     var urlWeather = `https://api.openweathermap.org/data/2.5/weather?q=${city.val()}&units=imperial&appid=${key}`
     var urlFiveDay = `https://api.openweathermap.org/data/2.5/forecast?q=${city.val()}&units=imperial&appid=${key}`
@@ -26,21 +32,28 @@ form.submit(function (event) {
         })
         .then(function (data) {
             console.log(data);
+            var container = document.getElementById('weather-container');
+            $('#weather-container').empty();
             var weatherHeader = document.createElement('h2');
             weatherHeader.innerHTML = data.name;
-            document.getElementById('weather-container').append(weatherHeader);
+            weatherHeader.setAttribute('id', 'weather-header');
+           container.append(weatherHeader);
             var date = document.createElement('h3');
-            date.innerHTML = new Date(data.dt * 1000).toLocaleString("en-US");
-            weatherHeader.append(date);
+            var format = new Date(data.dt * 1000);
+            date.innerHTML = format.toLocaleDateString(); 
+            container.append(date);
             var temp = document.createElement('p');
             temp.innerHTML = `Temp: ${data.main.temp} \u00B0F`;
-            weatherHeader.append(temp);
+            container.append(temp);
             var wind = document.createElement('p');
             wind.innerHTML = `Wind: ${data.wind.speed} MPH`;
-            weatherHeader.append(wind);
+            container.append(wind);
             var humidity = document.createElement('p');
             humidity.innerHTML = `Humidity: ${data.main.humidity} %`;
-            weatherHeader.append(humidity);
+            container.append(humidity);
+            temp.setAttribute('id', 'temp');
+            wind.setAttribute('id', 'wind');
+            humidity.setAttribute('id', 'humidity');
         });
     fetch(urlFiveDay)
         .then(function (response) {
@@ -48,15 +61,20 @@ form.submit(function (event) {
         })
         .then(function (data) {
             console.log(data);
+            $('#container').empty();           
+            var forecastHeader = document.createElement('h2');
+            var fiveDayContainer = document.createElement('div');
+            fiveDayContainer.setAttribute('id', 'five-day-container');
+            forecastHeader.innerHTML = "5 Day Forecast:"
+            document.getElementById('container').prepend(fiveDayContainer);
+            document.getElementById('container').prepend(forecastHeader);
             for(var i = 0; i < data.list.length; i+=8){
                 var dayContainer = document.createElement('div');
                 dayContainer.setAttribute('class', 'day-container');
                 document.getElementById('five-day-container').append(dayContainer);
-                var date = document.createElement('p');
-                var initialTime = (data.list[i].dt_txt).slice(0, 10);
-                var finalForm = initialTime.substr(5, 6) + '-' + initialTime.substr(0, 4);
-                console.log(finalForm)
-                date.innerHTML = finalForm;
+                var date = document.createElement('h4');
+                var format = new Date(data.list[i].dt * 1000);
+                date.innerHTML = format.toLocaleDateString(); 
                 dayContainer.append(date);
                 var temp = document.createElement('p');
                 temp.innerHTML = `Temp: ${data.list[i].main.temp} \u00B0F`;

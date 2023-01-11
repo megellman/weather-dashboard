@@ -1,10 +1,79 @@
+body{
+    margin: 0;
+    margin-top: -32px;
+}
+#sidebar{
+    position: absolute;
+    padding-left: 10px;
+    background-color: aliceblue;
+    height: 100%;
+    width: 290px;
+}
+
+.searchButtons {
+    display: block;
+    margin-top: 15px;
+    border-radius: 3px;
+    background-color: rgb(194, 197, 204);
+    width: 96%;
+    height: 4git 0px;
+}
+
+header{
+    background-color: rgb(17, 82, 139);
+    padding-top: 25px;
+    padding-bottom: 5px;
+}
+
+h1{
+    text-align: center;
+    font-size: 3em;
+}
+
+#container h2{
+    margin-left: 345px;
+    font-size: 1.7em;
+ }
+
 #five-day-container{
     display: flex;
-    column-gap: 10px;
+    column-gap: 40px;
+    justify-content: space-around;
+    margin-left: 350px;
 }
 
 .day-container {
     border: 2px solid black;
     border-radius: 4px;
     padding: 10px;
+    background-color: rgb(203, 212, 237);
+    width: 160px;
 }
+
+#weather-container{
+    border: solid 2px black;
+    margin: 10px;
+    margin-left: 310px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#temp,
+#wind,
+#humidity{
+    margin-left: 30px;
+    font-size: 1.2em;
+}
+
+#weather-container h2 {
+    font-size: 2.3em;
+    display: inline;
+    margin-left: 30px;
+}
+
+#weather-container h3{
+    display: inline;
+    margin-left: 30px;
+    font-size: 1.6em;
+}
+
