@@ -52,6 +52,22 @@ form.submit(function (event) {
     })
     .then(function (data) {
         console.log(data);
+        for(var i = 0; i < data.length; i+=8){
+            var dayContainer = document.createElement('div');
+            document.getElementById('five-day-container').append(dayContainer);
+            // var date = document.createElement('p');
+            // date.innerHTML = ;
+            dayContainer.append(date);
+            var temp = document.createElement('p');
+            temp.innerHTML = `Temp: ${list[i].main.temp} \u00B0F`;
+            dayContainer.append(temp);
+            var wind = document.createElement('p');
+            wind.innerHTML = `Wind: ${list[i].wind.speed} MPH`;
+            dayContainer.append(wind);
+            var humidity = document.createElement('p');
+            humidity.innerHTML = `Humidity: ${list[i].main.humidity} %`;
+            dayContainer.append(humidity);
+        }
 
     });
 })
