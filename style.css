@@ -1,0 +1,10 @@
+#five-day-container{
+    display: flex;
+    column-gap: 10px;
+}
+
+.day-container {
+    border: 2px solid black;
+    border-radius: 4px;
+    padding: 10px;
+}

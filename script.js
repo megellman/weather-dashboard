@@ -50,9 +50,13 @@ form.submit(function (event) {
             console.log(data);
             for(var i = 0; i < data.list.length; i+=8){
                 var dayContainer = document.createElement('div');
+                dayContainer.setAttribute('class', 'day-container');
                 document.getElementById('five-day-container').append(dayContainer);
                 var date = document.createElement('p');
-                date.innerHTML = data.list[i].dt_txt;
+                var initialTime = (data.list[i].dt_txt).slice(0, 10);
+                var finalForm = initialTime.substr(5, 6) + '-' + initialTime.substr(0, 4);
+                console.log(finalForm)
+                date.innerHTML = finalForm;
                 dayContainer.append(date);
                 var temp = document.createElement('p');
                 temp.innerHTML = `Temp: ${data.list[i].main.temp} \u00B0F`;
