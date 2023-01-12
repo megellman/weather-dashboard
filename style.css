@@ -10,13 +10,17 @@ body{
     width: 290px;
 }
 
-.searchButtons {
+#btnContainer button {
     display: block;
     margin-top: 15px;
     border-radius: 3px;
     background-color: rgb(194, 197, 204);
     width: 96%;
-    height: 4git 0px;
+    height: 40px;
+}
+
+#btnContainer button:active{
+    background-color: rgb(176, 179, 184);
 }
 
 header{
@@ -56,6 +60,13 @@ h1{
     margin-left: 310px;
     padding-top: 30px;
     padding-bottom: 30px;
+}
+
+#weather-container img {
+   width: 80px;
+    position: absolute;
+    left: 640px;
+    top: 130px;
 }
 
 #temp,

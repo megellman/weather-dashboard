@@ -1,28 +1,24 @@
 var key = 'ecbca053dcf966e18511cc24a49d0055';
 var form = $('#searchBar');
 var city = $('#city');
-
-
-var cityVal = $('#city').val();
+var buttonContainer = document.createElement('div');
+buttonContainer.setAttribute('id', 'btnContainer');
+document.getElementById('sidebar').append(buttonContainer);
 
 form.submit(function (event) {
     event.preventDefault();
-
-    var buttonContainer = document.createElement('div');
-    buttonContainer.setAttribute('id', 'btnContainer');
-    document.getElementById('sidebar').append(buttonContainer);
     var prevSearch = document.createElement('button');
     prevSearch.innerHTML = city.val();
-    prevSearch.setAttribute('is', city.val());
+    prevSearch.setAttribute('id', city.val());
     document.getElementById('btnContainer').append(prevSearch);
     $('#btnContainer').on('click', function (e) {
         var btnObject = JSON.parse(localStorage.getItem(e.target.innerText));
         event.stopPropagation();
         $('#weather-header').text(btnObject.weatherHeader);
         $('#date').text(btnObject.date);
+        $('#icon').attr('src', btnObject.icon);
         $('#temp').text(btnObject.temp);
         $('#wind').text(btnObject.wind);
-        console.log($('#date').text());
         $('#humidity').text(btnObject.humidity);
         var btnOtherObject = JSON.parse(localStorage.getItem(`${e.target.innerText}0`));
         console.log(btnOtherObject)
@@ -31,10 +27,10 @@ form.submit(function (event) {
             $('#date' + i).text(btnObject.date);
             $('#temp' + i).text(btnObject.temp);
             $('#wind' + i).text(btnObject.wind);
+            $('#icon' + i).attr('src', btnObject.icon);
         }
     })
 
-    console.log(city.val());
     var urlWeather = `https://api.openweathermap.org/data/2.5/weather?q=${city.val()}&units=imperial&appid=${key}`
     var urlFiveDay = `https://api.openweathermap.org/data/2.5/forecast?q=${city.val()}&units=imperial&appid=${key}`
 
@@ -54,6 +50,8 @@ form.submit(function (event) {
             var format = new Date(data.dt * 1000);
             date.innerHTML = format.toLocaleDateString();
             container.append(date);
+            var icon = document.createElement('img');
+            container.append(icon);
             var temp = document.createElement('p');
             temp.innerHTML = `Temp: ${data.main.temp} \u00B0F`;
             container.append(temp);
@@ -63,7 +61,8 @@ form.submit(function (event) {
             var humidity = document.createElement('p');
             humidity.innerHTML = `Humidity: ${data.main.humidity} %`;
             container.append(humidity);
-
+            icon.setAttribute('src', `http://openweathermap.org/img/w/${data.weather[0].icon}.png`);
+            icon.setAttribute('id', 'icon')
             date.setAttribute('id', 'date');
             temp.setAttribute('id', 'temp');
             wind.setAttribute('id', 'wind');
@@ -73,7 +72,8 @@ form.submit(function (event) {
                 date: format.toLocaleDateString(),
                 temp: `Temp: ${data.main.temp} \u00B0F`,
                 wind: `Wind: ${data.wind.speed} MPH`,
-                humidity: `Humidity: ${data.main.humidity} %`
+                humidity: `Humidity: ${data.main.humidity} %`,
+                icon: `http://openweathermap.org/img/w/${data.weather[0].icon}.png`
             }
             localStorage.setItem(city.val(), JSON.stringify(currentInfo));
             cityVal = city.val();
@@ -96,6 +96,9 @@ form.submit(function (event) {
                 var dayContainer = document.createElement('div');
                 dayContainer.setAttribute('class', 'day-container');
                 document.getElementById('five-day-container').append(dayContainer);
+                var icon = document.createElement('img');
+                icon.setAttribute('src', `http://openweathermap.org/img/w/${data.list[i].weather[0].icon}.png`);
+                dayContainer.append(icon);
                 var date = document.createElement('h4');
                 var format = new Date(data.list[i].dt * 1000);
                 date.innerHTML = format.toLocaleDateString();
@@ -113,25 +116,17 @@ form.submit(function (event) {
                 temp.setAttribute('id', 'temp' + i);
                 wind.setAttribute('id', 'wind' + i);
                 humidity.setAttribute('id', 'humidity' + i);
+                icon.setAttribute('id', 'icon' + i);
                 var currentInfo = {
                     date: format.toLocaleDateString(),
                     temp: `Temp: ${data.list[i].main.temp} \u00B0F`,
                     wind: `Wind: ${data.list[i].wind.speed} MPH`,
-                    humidity: `Humidity: ${data.list[i].main.humidity} %`
+                    humidity: `Humidity: ${data.list[i].main.humidity} %`,
+                    icon: `http://openweathermap.org/img/w/${data.list[0].weather[0].icon}.png`
                 }
                 localStorage.setItem(city.val() + i, JSON.stringify(currentInfo));
 
             }
         });
 })
-
-
-// console.log(cityVal)
-// // $('#city').val().on('click', function(){
-// //     console.log('hello')
-// // })
-
-// function btn(){
-//     console.log($(this).val())
-// }
 
