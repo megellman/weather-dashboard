@@ -1,26 +1,38 @@
 var key = 'ecbca053dcf966e18511cc24a49d0055';
-
-
-
 var form = $('#searchBar');
 var city = $('#city');
 
 
-// var url = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},US&limit=5&appid=${key}`;
-
-
-// var urlTwo = `https://api.openweathermap.org/data/2.5/forecast?lat=33.835289&lon=-117.914497&appid=${key}`;
-
-
+var cityVal = $('#city').val();
 
 form.submit(function (event) {
     event.preventDefault();
 
+    var buttonContainer = document.createElement('div');
+    buttonContainer.setAttribute('id', 'btnContainer');
+    document.getElementById('sidebar').append(buttonContainer);
     var prevSearch = document.createElement('button');
     prevSearch.innerHTML = city.val();
-    prevSearch.setAttribute('class', 'searchButtons')
-    document.getElementById('sidebar').append(prevSearch);
-
+    prevSearch.setAttribute('is', city.val());
+    document.getElementById('btnContainer').append(prevSearch);
+    $('#btnContainer').on('click', function (e) {
+        var btnObject = JSON.parse(localStorage.getItem(e.target.innerText));
+        event.stopPropagation();
+        $('#weather-header').text(btnObject.weatherHeader);
+        $('#date').text(btnObject.date);
+        $('#temp').text(btnObject.temp);
+        $('#wind').text(btnObject.wind);
+        console.log($('#date').text());
+        $('#humidity').text(btnObject.humidity);
+        var btnOtherObject = JSON.parse(localStorage.getItem(`${e.target.innerText}0`));
+        console.log(btnOtherObject)
+        for (var i = 0; i < 32; i += 8) {
+            $('#weather-header' + i).text(btnObject.weatherHeader);
+            $('#date' + i).text(btnObject.date);
+            $('#temp' + i).text(btnObject.temp);
+            $('#wind' + i).text(btnObject.wind);
+        }
+    })
 
     console.log(city.val());
     var urlWeather = `https://api.openweathermap.org/data/2.5/weather?q=${city.val()}&units=imperial&appid=${key}`
@@ -37,10 +49,10 @@ form.submit(function (event) {
             var weatherHeader = document.createElement('h2');
             weatherHeader.innerHTML = data.name;
             weatherHeader.setAttribute('id', 'weather-header');
-           container.append(weatherHeader);
+            container.append(weatherHeader);
             var date = document.createElement('h3');
             var format = new Date(data.dt * 1000);
-            date.innerHTML = format.toLocaleDateString(); 
+            date.innerHTML = format.toLocaleDateString();
             container.append(date);
             var temp = document.createElement('p');
             temp.innerHTML = `Temp: ${data.main.temp} \u00B0F`;
@@ -51,9 +63,21 @@ form.submit(function (event) {
             var humidity = document.createElement('p');
             humidity.innerHTML = `Humidity: ${data.main.humidity} %`;
             container.append(humidity);
+
+            date.setAttribute('id', 'date');
             temp.setAttribute('id', 'temp');
             wind.setAttribute('id', 'wind');
             humidity.setAttribute('id', 'humidity');
+            var currentInfo = {
+                weatherHeader: data.name,
+                date: format.toLocaleDateString(),
+                temp: `Temp: ${data.main.temp} \u00B0F`,
+                wind: `Wind: ${data.wind.speed} MPH`,
+                humidity: `Humidity: ${data.main.humidity} %`
+            }
+            localStorage.setItem(city.val(), JSON.stringify(currentInfo));
+            cityVal = city.val();
+
         });
     fetch(urlFiveDay)
         .then(function (response) {
@@ -61,20 +85,20 @@ form.submit(function (event) {
         })
         .then(function (data) {
             console.log(data);
-            $('#container').empty();           
+            $('#container').empty();
             var forecastHeader = document.createElement('h2');
             var fiveDayContainer = document.createElement('div');
             fiveDayContainer.setAttribute('id', 'five-day-container');
             forecastHeader.innerHTML = "5 Day Forecast:"
             document.getElementById('container').prepend(fiveDayContainer);
             document.getElementById('container').prepend(forecastHeader);
-            for(var i = 0; i < data.list.length; i+=8){
+            for (var i = 0; i < data.list.length; i += 8) {
                 var dayContainer = document.createElement('div');
                 dayContainer.setAttribute('class', 'day-container');
                 document.getElementById('five-day-container').append(dayContainer);
                 var date = document.createElement('h4');
                 var format = new Date(data.list[i].dt * 1000);
-                date.innerHTML = format.toLocaleDateString(); 
+                date.innerHTML = format.toLocaleDateString();
                 dayContainer.append(date);
                 var temp = document.createElement('p');
                 temp.innerHTML = `Temp: ${data.list[i].main.temp} \u00B0F`;
@@ -85,11 +109,29 @@ form.submit(function (event) {
                 var humidity = document.createElement('p');
                 humidity.innerHTML = `Humidity: ${data.list[i].main.humidity} %`;
                 dayContainer.append(humidity);
+                date.setAttribute('id', 'date' + i);
+                temp.setAttribute('id', 'temp' + i);
+                wind.setAttribute('id', 'wind' + i);
+                humidity.setAttribute('id', 'humidity' + i);
+                var currentInfo = {
+                    date: format.toLocaleDateString(),
+                    temp: `Temp: ${data.list[i].main.temp} \u00B0F`,
+                    wind: `Wind: ${data.list[i].wind.speed} MPH`,
+                    humidity: `Humidity: ${data.list[i].main.humidity} %`
+                }
+                localStorage.setItem(city.val() + i, JSON.stringify(currentInfo));
+
             }
         });
 })
 
-// for (let i = 0; i < array.length; i+=8) {
-//     const element = array[i];
-    
+
+// console.log(cityVal)
+// // $('#city').val().on('click', function(){
+// //     console.log('hello')
+// // })
+
+// function btn(){
+//     console.log($(this).val())
 // }
+
