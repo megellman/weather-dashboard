@@ -1,3 +1,11 @@
+:root{
+   --main: #74a6f2;
+   --lighter: #ddeeff;
+   --main-border: #0053ab;
+    --secondary: #fae38f;
+    --darker: #c69d0b;
+}
+
 body{
     margin: 0;
     margin-top: -32px;
@@ -5,7 +13,7 @@ body{
 #sidebar{
     position: absolute;
     padding-left: 10px;
-    background-color: aliceblue;
+    background-color: var(--lighter);
     height: 100%;
     width: 290px;
 }
@@ -14,17 +22,18 @@ body{
     display: block;
     margin-top: 15px;
     border-radius: 3px;
-    background-color: rgb(194, 197, 204);
+    background-color: var(--secondary);
     width: 96%;
     height: 40px;
+    border-color: var(--darker);
 }
 
 #btnContainer button:active{
-    background-color: rgb(176, 179, 184);
+    background-color: var(--secondary);
 }
 
 header{
-    background-color: rgb(17, 82, 139);
+    background-color: var(--main);
     padding-top: 25px;
     padding-bottom: 5px;
 }
@@ -35,31 +44,33 @@ h1{
 }
 
 #container h2{
-    margin-left: 345px;
+    margin-left: 310px;
     font-size: 1.7em;
  }
 
 #five-day-container{
     display: flex;
-    column-gap: 40px;
+    /* column-gap: 40px; */
     justify-content: space-around;
-    margin-left: 350px;
+    margin-left: 300px;
+    flex-wrap: wrap;
 }
 
 .day-container {
-    border: 2px solid black;
+    border: 2px solid var(--main-border);
     border-radius: 4px;
     padding: 10px;
-    background-color: rgb(203, 212, 237);
-    width: 160px;
+    background-color: var(--main);
+    flex-basis: 17%;
 }
 
 #weather-container{
-    border: solid 2px black;
+    border: solid 2px var(--darker);
     margin: 10px;
     margin-left: 310px;
     padding-top: 30px;
     padding-bottom: 30px;
+    background-color: var(--secondary);
 }
 
 #weather-container img {
