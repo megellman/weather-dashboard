@@ -1,102 +1,108 @@
 # Weather Dashboard
 
-## Your Task
+## Technology Used 
 
-Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Your challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
+| Technology Used         | Resource URL           | 
+| ------------- |:-------------:| 
+| HTML    | [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Web/HTML) | 
+| CSS     | [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Web/CSS)      |   
+| Git | [git-scm.com](https://git-scm.com/)     |    
+| jQuery | [api.jquery.com](https://jquery.com/) |
+| Open Weather API | [openweathermap.org](https://openweathermap.org/api)
 
-Use the [5 Day Weather Forecast](https://openweathermap.org/forecast5) to retrieve weather data for cities. The base URL should look like the following: `https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}`. After registering for a new API key, you may need to wait up to 2 hours for that API key to activate.
+## Description 
 
-**Hint**: Using the 5 Day Weather Forecast API, you'll notice that you will need to pass in coordinates instead of just a city name. Using the OpenWeatherMap APIs, how could we retrieve geographical coordinates given a city name?
+[Visit the Deployed Site](https://megellman.github.io/weather-dashboard/)
 
-You will use `localStorage` to store any persistent data. For more information on how to work with the OpenWeather API, refer to the [Full-Stack Blog on how to use API keys](https://coding-boot-camp.github.io/full-stack/apis/how-to-use-api-keys).
+For this project, I created a weather dashboard. When a user enters a city into the search bar, the current weather data for today will appear as well as weather predictions for the next five days. After the user searches for a city, a button will appear in the sidebar with that city's name. If the user searches up a new city and wants to look at the weather data of the previous city, they can click on the city button to make the weather data appear again. 
 
-## User Story
+I used two APIs from openweathermap.org. One API provides the current weather data for a given location. The other API provides hourly weather data for the next five days.
+
+
+![Site Landing Page](./snap-shot.gif)
+
+
+## Table of Contents
+
+If your README is very long, add a table of contents to make it easy for users to find what they need.
+
+* [Code Example](#code-example)
+* [Learning Points](#learning-points)
+* [Author Info](#author-info)
+* [Credits](#credits)
+* [License](#license)
+
+## Code Example
+
+To be able to access the previously searched city data at the click of a button, I saved the data I needed into an object and set it's key to the name of the city that was searched. 
 
 ```
-AS A traveler
-I WANT to see the weather outlook for multiple cities
-SO THAT I can plan a trip accordingly
+            var currentInfo = {
+                weatherHeader: data.name,
+                date: format.toLocaleDateString(),
+                temp: `Temp: ${data.main.temp} \u00B0F`,
+                wind: `Wind: ${data.wind.speed} MPH`,
+                humidity: `Humidity: ${data.main.humidity} %`,
+                icon: `http://openweathermap.org/img/w/${data.weather[0].icon}.png`
+            }
+            localStorage.setItem(city.val(), JSON.stringify(currentInfo));
+```
+Then I created a container to house all of the city buttons. When one was clicked, the function would run for the corresponding city button. This function gets the corresponding object from local storage and replaces the text content of each item with the values from the object. The only exception is the image since it did not have text content. For image, I replaced the src link with the corresponding city image src link. 
+```
+  $('#btnContainer').on('click', function (e) {
+        var btnObject = JSON.parse(localStorage.getItem(e.target.innerText));
+        event.stopPropagation();
+        $('#weather-header').text(btnObject.weatherHeader);
+        $('#date').text(btnObject.date);
+        $('#icon').attr('src', btnObject.icon);
+        $('#temp').text(btnObject.temp);
+        $('#wind').text(btnObject.wind);
+        $('#humidity').text(btnObject.humidity);
 ```
 
-## Acceptance Criteria
+## Learning Points
+This was my first time using APIs. The most important thing I learned was definitely how to read the API documentation. Originally, I found an API call that would provide the current weather data, but I would need to find the city name, state code, and country code. While possible, this would take longer and would require more code. After reading through the documentation, I found an API call that would provide the current weather data and only needed the city name. 
 
-```
-GIVEN a weather dashboard with form inputs
-WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the wind speed
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
-```
+## Author Info
 
-## Mock-Up
+### Megan Ellman
 
-The following image shows the web application's appearance and functionality:
+[LinkedIn](https://www.linkedin.com/in/megan-ellman/)
 
-![The weather app includes a search option, a list of cities, and a five-day forecast and current weather conditions for Atlanta.](./Assets/06-server-side-apis-homework-demo.png)
+[GitHub](https://github.com/megellman)
 
-## Grading Requirements
+[Portfolio](https://megellman.github.io/portfolio/)
 
-> **Note**: If a Challenge assignment submission is marked as “0”, it is considered incomplete and will not count towards your graduation requirements. Examples of incomplete submissions include the following:
->
-> * A repository that has no code
->
-> * A repository that includes a unique name but nothing else
->
-> * A repository that includes only a README file but nothing else
->
-> * A repository that only includes starter code
+## Credits 
 
-This Challenge is graded based on the following criteria: 
+|Resource | Link |
+|-------|:-------:|
+|On Click Events | [api.jquery.com](https://api.jquery.com/on/#on-events-selector-data-handler) |
+| Local Storage   | [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) |
+| Fetch URL | [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+|Open Weather API | [openweathermap.org](https://openweathermap.org/current)
 
-### Technical Acceptance Criteria: 40%
 
-* Satisfies all of the above acceptance criteria plus the following:
+## License
 
-    * Uses the OpenWeather API to retrieve weather data.
+MIT License
 
-    * Uses `localStorage` to store persistent data.
+Copyright (c) [2023] [Megan Ellman]
 
-### Deployment: 32%
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-* Application deployed at live URL.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-* Application loads with no errors.
-
-* Application GitHub URL submitted.
-
-* GitHub repository that contains application code.
-
-### Application Quality: 15%
-
-* Application user experience is intuitive and easy to navigate.
-
-* Application user interface style is clean and polished.
-
-* Application resembles the mock-up functionality provided in the Challenge instructions.
-
-### Repository Quality: 13%
-
-* Repository has a unique name.
-
-* Repository follows best practices for file structure and naming conventions.
-
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
-
-* Repository contains multiple descriptive commit messages.
-
-* Repository contains quality readme file with description, screenshot, and link to deployed application.
-
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* The URL of the functional, deployed application.
-
-* The URL of the GitHub repository. Give the repository a unique name and include a readme describing the project.
-
-- - -
-© 2022 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
