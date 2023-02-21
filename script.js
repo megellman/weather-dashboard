@@ -17,7 +17,7 @@ form.submit(function (event) {
     // Applies weather stats of previously searched button to page
     $('#btnContainer').on('click', function (e) {
         var btnObject = JSON.parse(localStorage.getItem(e.target.innerText));
-        event.stopPropagation();
+        e.stopPropagation();
         $('#weather-header').text(btnObject.weatherHeader);
         $('#date').text(btnObject.date);
         $('#icon').attr('src', btnObject.icon);
@@ -37,6 +37,7 @@ form.submit(function (event) {
 
     var urlWeather = `https://api.openweathermap.org/data/2.5/weather?q=${city.val()}&units=imperial&appid=${key}`
     var urlFiveDay = `https://api.openweathermap.org/data/2.5/forecast?q=${city.val()}&units=imperial&appid=${key}`
+
 
     // Current weather data
     fetch(urlWeather)
